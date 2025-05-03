@@ -1,16 +1,32 @@
 import os
 from pyrogram import Client, filters
 
+# تعريف المنفذ والمتغيرات البيئية
+PORT = os.environ.get('PORT', '8080')
+
 # معلومات الواجهة البرمجية
-api_id = os.environ.get('API_ID')
-api_hash = os.environ.get('API_HASH')
-bot_token = os.environ.get('BOT_TOKEN')
+api_id = os.environ.get('API_ID', '27522621')
+api_hash = os.environ.get('API_HASH', '678ea1fd4e406db179f0d1ca307e81a7')
+bot_token = os.environ.get('BOT_TOKEN', '7993866113:AAGyU45CV7_qbjXlQY85Obqk-gRNCiec4M0')
 
-# باقي الكود كما هو...
+# القنوات
+source_channel = "@salamyg"
+target_channel = "@fatwaWahidbaly"
 
-# القنوات (قم بتعديلها بوضع معرف القناة مسبوقًا بـ @)
-source_channel = "@salamyg"  # قناة المصدر
-target_channel = "@fatwaWahidbaly"  # قناة الهدف
+# إضافة خادم HTTP بسيط
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b'Bot is running')
+
+def run_http_server():
+    server_address = ('0.0.0.0', int(PORT))
+    httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+    print(f'Starting HTTP server on port {PORT}...')
+    httpd.serve_forever()
 
 # إنشاء عميل بيروغرام
 app = Client("forwarder_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
@@ -76,7 +92,11 @@ async def process_message(client, message):
         
     except Exception as e:
         print(f"ff {e}")
-
-# تشغيل البوت
-print("gg..")
-app.run()
+if __name__ == "__main__":
+    import threading
+    # تشغيل خادم HTTP في thread منفصل
+    server_thread = threading.Thread(target=run_http_server)
+    server_thread.start()
+    
+    print("جاري بدء تشغيل البوت...")
+    app.run()

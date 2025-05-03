@@ -1,30 +1,19 @@
-from pyrogram import Client, filters
-import re
 import os
-from aiohttp import web
-import asyncio
+from pyrogram import Client, filters
 
 # معلومات الواجهة البرمجية
-api_id = 27522621
-api_hash = "678ea1fd4e406db179f0d1ca307e81a7"
-bot_token = "7993866113:AAGyU45CV7_qbjXlQY85Obqk-gRNCiec4M0"
+api_id = os.environ.get('API_ID')
+api_hash = os.environ.get('API_HASH')
+bot_token = os.environ.get('BOT_TOKEN')
+
+# باقي الكود كما هو...
 
 # القنوات (قم بتعديلها بوضع معرف القناة مسبوقًا بـ @)
 source_channel = "@salamyg"  # قناة المصدر
 target_channel = "@fatwaWahidbaly"  # قناة الهدف
 
-# إنشاء تطبيق الويب لعمل HTTP server
-app_web = web.Application()
-
 # إنشاء عميل بيروغرام
 app = Client("forwarder_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
-
-# دالة للتحقق من صحة الخادم
-async def health_check(request):
-    return web.Response(text="البوت يعمل بنجاح!")
-
-# إضافة مسار للتحقق من الصحة
-app_web.router.add_get("/", health_check)
 
 # معالجة الرسائل من القناة المصدر
 @app.on_message(filters.chat(source_channel))
@@ -83,45 +72,11 @@ async def process_message(client, message):
         elif message.audio:
             await client.send_audio(chat_id=target_channel, audio=message.audio.file_id, caption=new_text)
             
-        print("تم إرسال الرسالة بنجاح")
+        print("ffssح")
         
     except Exception as e:
-        print(f"خطأ في المعالجة: {e}")
+        print(f"ff {e}")
 
-# دالة لتشغيل خادم الويب
-async def run_web_server():
-    # الحصول على رقم المنفذ من متغيرات البيئة أو استخدام القيمة الافتراضية
-    port = int(os.environ.get("PORT", 10000))
-    
-    # إعداد الخادم
-    runner = web.AppRunner(app_web)
-    await runner.setup()
-    site = web.TCPSite(runner, '0.0.0.0', port)
-    
-    print(f"بدء تشغيل خادم الويب على المنفذ {port}")
-    await site.start()
-    
-    # الانتظار إلى أجل غير مسمى
-    while True:
-        await asyncio.sleep(3600)  # انتظار لمدة ساعة ثم التحقق مرة أخرى
-
-# الدالة الرئيسية لتشغيل البوت وخادم الويب معًا
-async def main():
-    # تشغيل خادم الويب في مهمة منفصلة
-    asyncio.create_task(run_web_server())
-    
-    # تشغيل بوت التيليجرام
-    print("بدء تشغيل بوت التيليجرام...")
-    await app.start()
-    
-    # انتظار إلى أجل غير مسمى
-    await asyncio.sleep(999999)
-
-# بدء تنفيذ البرنامج
-if __name__ == "__main__":
-    # تشغيل الدالة الرئيسية مع دعم الإلغاء
-    loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(main())
-    except KeyboardInterrupt:
-        print("تم إيقاف البوت")
+# تشغيل البوت
+print("gg..")
+app.run()

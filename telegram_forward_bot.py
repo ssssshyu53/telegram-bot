@@ -7,7 +7,7 @@ api_hash = "678ea1fd4e406db179f0d1ca307e81a7"
 bot_token = "7993866113:AAGyU45CV7_qbjXlQY85Obqk-gRNCiec4M0"
 
 # القنوات (قم بتعديلها بوضع معرف القناة مسبوقًا بـ @)
-source_channel = "@YastaftwonkMen3"  # قناة المصدر
+source_channel = "@salamyg"  # قناة المصدر
 target_channel = "@fatwaWahidbaly"  # قناة الهدف
 
 app = Client("forwarder_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
